@@ -2,58 +2,107 @@ import java.util.Iterator;
 
 public class SortedLinkedData<K, V> implements DictionaryInterface<K, V> {
 
-	
+	private int size;
+	private Node head;
+
+	public SortedLinkedData() {
+		size = 0;
+		head = null;
+	}
+
 	public V add(K key, V value) {
-		// TODO Auto-generated method stub
+		boolean result = false;
+		while (head.next != null) {			//replaces
+			if (head.key == key) {
+				result = true;
+				return head.value;
+			}
+			head = head.next;
+		}
+		if (head == null) {					//first entry
+			head.key = key;
+			head.value = value;
+		}
+		if (!result) {						//add 
+			Node node = new Node();
+			head.next = node;
+			node.key = key;
+			node.value = value;
+			node.next = null; // adds at end
+			size++;
+		}
 		return null;
 	}
 
-	
 	public V remove(K key) {
-		// TODO Auto-generated method stub
-		return null;
+		V temp = null;
+		while(head.next != null)
+		{
+			if(head.key == key)
+			{
+				temp = head.value;
+				head.key = null;
+			}	
+			head = head.next;
+		}
+		return temp;
 	}
 
-	
 	public V getValue(K key) {
-		// TODO Auto-generated method stub
+		while (head.next != null) {
+			if (head.key == key)
+				return head.value;
+		}
+		head = head.next;
 		return null;
 	}
 
-	
 	public boolean contains(K key) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean result = false;
+		while (head.next != null) {
+			if (head.key == key)
+				result = true;
+		}
+		return result;
 	}
 
-	
 	public Iterator<K> getKeyIterator() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	
 	public Iterator<V> getValueIterator() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return (head == null);
 	}
 
-	
 	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 
-	
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		while(head.next != null)
+		{
+			head.key = null;
+			head.value = null;
+			head = head.next;
+			head.next = null;
+		}
+
 	}
 
+	public class Node {
+		private K key;
+		private V value;
+		private Node next;
+
+		public Node() {
+			next = null;
+		}
+
+	}
 }
